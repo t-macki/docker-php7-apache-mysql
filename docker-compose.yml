@@ -1,0 +1,21 @@
+version: '2'
+services:
+  db:
+    image: mysql:5.7
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --sql_mode="" --secure-file-priv=""
+    environment:
+      - MYSQL_ROOT_PASSWORD=app
+      - MYSQL_DATABASE=app
+    ports:
+      - "3306:3306"
+  php7:
+    build:
+      context: ./docker/php7/
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - ./src/:/var/www/html
+      - ./docker/php7/php.ini:/usr/local/etc/php/conf.d/zzmyphp.ini
+    links:
+      - db
